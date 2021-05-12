@@ -1,29 +1,42 @@
-import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from "vue";
+import VueRouter, { RouteConfig } from "vue-router";
+import Deals from "../views/Deals.vue";
+import Games from "../views/Games.vue";
+import Stores from "../views/Stores.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+	{
+		path: "/deals",
+		name: "Deals",
+		component: Deals
+	},
+	{
+		path: "/games",
+		name: "Games",
+		component: Games
+	},
+	{
+		path: "/stores",
+		name: "Stores",
+		component: Stores
+	}
+];
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+	mode: "history",
+	base: process.env.BASE_URL,
+	routes
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+	// ASSUMPTION
+	// there is no home page, so the user needs to go to the deals page first
+	if (to.fullPath === "/") {
+		next("/deals");
+	}
+	next();
+});
+
+export default router;
