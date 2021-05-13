@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid">
-
     <div
       v-for="row in numRows"
       :key="row"
@@ -54,12 +53,9 @@ export default class Deals extends Vue {
 		return idx > (this.deals?.length || 0);
 	}
 
-	getDealAtIndex(idx: number): Deal {
-		if (idx < 0) {
-			idx = 0;
-		}
-		if (idx > (this.deals?.length || 0)) {
-			idx = this.deals?.length || 0;
+	getDealAtIndex(idx: number): Deal | null {
+		if (idx < 0 || idx > (this.deals?.length || 0)) {
+			return null;
 		}
 		return this.deals[idx];
 	}

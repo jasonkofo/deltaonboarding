@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="deal-item-container">
-      <img
+      <!-- <img
         v-if="deal.hasImage"
         :src="deal.truth"
         :alt="deal.title"
         class="deal-item-img"
-      >
+      > -->
       <h5 class="header-title">{{ deal.trimmedTitle }}</h5>
       <p class="pricing-section">
         <span :class="normalPriceCSS">{{ deal.normalPrice }}</span>
@@ -35,7 +35,7 @@ export default class DealItem extends Vue {
 	@Prop({ required: true }) deal!: Deal;
 
 	get normalPriceCSS(): string {
-		if (this.deal.onSale) {
+		if (this.deal?.onSale || false) {
 			return "text-strikethrough";
 		}
 		return "";
@@ -51,10 +51,10 @@ export default class DealItem extends Vue {
 }
 
 @mixin left-align() {
-	text-align: left !important;
 }
 
 .deal-item-container {
+	text-align: left;
 	background-color: rgba(251, 251, 251, 255);
 	padding: 25px;
 	margin: 5px;
@@ -64,20 +64,12 @@ export default class DealItem extends Vue {
 	width: 400px;
 	.header-title {
 		margin-top: 15px;
-		font-weight: 900px;
-		@include left-align();
-	}
-	.deal-item-img {
-		width: 200px;
-		height: 200px;
-		@include rounded-edges();
+		font-weight: 700;
 	}
 	.text-strikethrough {
 		text-decoration: line-through;
-		@include left-align();
 	}
 	.pricing-section {
-		@include left-align();
 		span {
 			margin-right: 10px;
 		}
@@ -85,10 +77,6 @@ export default class DealItem extends Vue {
 			color: rgba(0, 174, 141, 255);
 			font-weight: 400;
 		}
-	}
-
-	.view-more-button {
-		@include left-align();
 	}
 }
 </style>

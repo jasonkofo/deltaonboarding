@@ -1,3 +1,27 @@
+/*
+Local Deal class
+	{
+		"internalName": "MONSTERSLAYERS",
+		"title": "Monster Slayers",
+		"metacriticLink": "/game/pc/monster-slayers",
+		"dealID": "efnekCfOb2PEuQKTA0pkNNle%2FulyRP4j9fx0E5vdncQ%3D",
+		"storeID": "3",
+		"gameID": "167601",
+		"salePrice": "2.43",
+		"normalPrice": "8.99",
+		"isOnSale": "1",
+		"savings": "72.969967",
+		"metacriticScore": "86",
+		"steamRatingText": "Very Positive",
+		"steamRatingPercent": "88",
+		"steamRatingCount": "313",
+		"steamAppID": "496620",
+		"releaseDate": 1534291200,
+		"lastChange": 1535037686,
+		"dealRating": "10.0",
+		"thumb": "https://steamcdn-a.akamaihd.net/steam/apps/496620/capsule_sm_120.jpg?t=1533784859"
+	}
+*/
 export class Deal {
 	private _dealID: string;
 	private _dealRating: number;
@@ -90,9 +114,13 @@ export class Deal {
 		return this.toCurrency(this._salePrice || 0);
 	}
 
+	get storeID(): string {
+		return this._storeID || "";
+	}
+
 	private toCurrency(val: number) {
-		return val.toLocaleString("en-za", {
-			currency: "ZAR",
+		return val.toLocaleString("en-US", {
+			currency: "usd",
 			style: "currency",
 			useGrouping: true,
 			maximumFractionDigits: 2
