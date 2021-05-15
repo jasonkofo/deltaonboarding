@@ -100,7 +100,7 @@ export class DealsService {
 	}
 
 	static fetchDeals(filterFunc?: (f: Deal) => boolean): Promise<Deal[]> {
-		if (typeof this.storesCache === "undefined" || this.dealsCache?.isStale())
+		if (typeof this.dealsCache === "undefined" || this.dealsCache?.isStale())
 			return this.fetchDealsFromServer(filterFunc);
 
 		if (typeof filterFunc !== "function") {

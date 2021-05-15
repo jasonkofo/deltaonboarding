@@ -9,7 +9,7 @@
       >
       <h5 class="header-title">{{ store.storeName }}</h5>
       <p class="pricing-section">
-        {{ numDeals }}
+        {{ numDealsText }}
       </p>
 
       <button
@@ -32,6 +32,10 @@ export default class DealItem extends Vue {
 	@Prop({ default: 0, type: Number }) numDeals!: number;
 
 	navigateToStore() {}
+
+	get numDealsText(): string {
+		return `${this.numDeals} deal${this.numDeals === 1 ? "" : "s"}`;
+	}
 }
 </script>
 
