@@ -3,18 +3,16 @@
     <div class="store-item-container">
       <img
         v-if="store.hasBannerImage"
-        :src="store.bannerImage"
+        :src="ensureCheapShark(store.logoImage)"
         :alt="store.title"
         class="store-item-img"
       >
       <h5 class="header-title">{{ store.storeName }}</h5>
-      <p class="pricing-section">
-        {{ numDealsText }}
-      </p>
+      <p> {{ numDealsText }} </p>
 
       <button
         type="button"
-        class="btn btn-outline-info view-more-button"
+        class="btn btn-outline-info"
         @click="navigateToStore()"
       >View More</button>
     </div>
@@ -30,11 +28,20 @@ import { Component, Prop } from "vue-property-decorator";
 export default class DealItem extends Vue {
 	@Prop({ required: true }) store!: Store;
 	@Prop({ default: 0, type: Number }) numDeals!: number;
+	path = require("path");
 
 	navigateToStore() {}
 
 	get numDealsText(): string {
 		return `${this.numDeals} deal${this.numDeals === 1 ? "" : "s"}`;
+	}
+
+	private ensureCheapShark(url: string): string {
+		const p = "https://www.cheapshark.com/";
+		if (url.indexOf(p) === -1) {
+			url = this.path.join(p, url);
+		}
+		return url;
 	}
 }
 </script>
@@ -44,11 +51,8 @@ export default class DealItem extends Vue {
 	border-radius: 15px;
 }
 
-@mixin left-align() {
-	text-align: left;
-}
-
 .store-item-container {
+	text-align: left;
 	background-color: rgba(251, 251, 251, 255);
 	padding: 25px;
 	margin: 5px;
@@ -59,23 +63,14 @@ export default class DealItem extends Vue {
 	.header-title {
 		margin-top: 15px;
 		font-weight: 700;
-		@include left-align();
 	}
 	.store-item-img {
-		width: 200px;
-		height: 200px;
+		width: 100px;
+		height: 100px;
 		@include rounded-edges();
 	}
 	.text-strikethrough {
 		text-decoration: line-through;
-		@include left-align();
-	}
-	.pricing-section {
-		@include left-align();
-	}
-
-	.view-more-button {
-		@include left-align();
 	}
 }
 </style>

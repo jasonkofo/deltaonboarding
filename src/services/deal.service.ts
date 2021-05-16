@@ -109,7 +109,9 @@ export class DealsService {
 		return toPromise(this.dealsCache.records.filter(filterFunc));
 	}
 
-	static async fetchStores(filterFunc?: (s: Store) => boolean): Promise<Store[]> {
+	static async fetchStores(
+		filterFunc: (s: Store) => boolean = (s: Store) => s.isActive
+	): Promise<Store[]> {
 		if (typeof this.storesCache === "undefined" || this.storesCache?.isStale())
 			return this.fetchStoresFromServer(filterFunc);
 

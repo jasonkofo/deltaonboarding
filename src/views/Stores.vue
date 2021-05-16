@@ -1,40 +1,35 @@
 <template>
   <div class="container-fluid">
+    <div>
+      <SearchComponent
+        @startTyping="triggerSearchComponent"
+        @searchText="onSearchFinished"
+      />
+    </div>
     <div
-      v-for="row in numRows"
-      :key="row"
-      class="row"
+      v-loading="busyLoading"
+      class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-xs-1"
     >
       <StoreItem
-        class="col-4"
-        v-if="!isIndexOutOfBounds(row)"
-        :store="getStoreAtIndex(row)"
-        :numDeals="storeID2NumDeals.get(stores[row].storeID)"
-      />
-      <StoreItem
-        class="col-4"
-        v-if="!isIndexOutOfBounds(row+1)"
-        :store="getStoreAtIndex(row+1)"
-        :numDeals="storeID2NumDeals.get(stores[row+1].storeID)"
-      />
-      <StoreItem
-        class="col-4"
-        v-if="!isIndexOutOfBounds(row+2)"
-        :store="getStoreAtIndex(row+2)"
-        :numDeals="storeID2NumDeals.get(stores[row+2].storeID)"
+        v-for="(store, i) in stores"
+        :key="i"
+        class="col"
+        :store="store"
+        :numDeals="storeID2NumDeals.get(store.storeID)"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { Store } from "../models/store";
 import StoreItem from "../components/StoreItem.vue";
 import SearchComponent from "../components/Search.vue";
 import { DealsService } from "../services/deal.service";
 import { Deal } from "@/models/deal";
+import { mixins } from "vue-class-component";
+import { SearchComponentMixin } from "../mixins/search-component-mixin";
 
 @Component({
 	components: {
@@ -42,13 +37,13 @@ import { Deal } from "@/models/deal";
 		SearchComponent
 	}
 })
-export default class Deals extends Vue {
-	stores: Store[] = [];
+export default class Stores extends mixins(SearchComponentMixin) {
+	storesInternal: Store[] = [];
 	storeID2Deals: Map<string, Deal[]> = {} as Map<string, Deal[]>;
 
 	async beforeCreate() {
 		DealsService.fetchStores().then(async stores => {
-			this.stores = stores;
+			this.storesInternal = stores;
 			const deals = await DealsService.fetchDeals();
 			const m = new Map<string, Deal[]>();
 			for (const deal of (deals || []) as Deal[]) {
@@ -73,19 +68,12 @@ export default class Deals extends Vue {
 		return m;
 	}
 
-	get numRows(): number {
-		return Math.ceil(this.stores.length / 3);
-	}
-
-	isIndexOutOfBounds(idx: number): boolean {
-		return idx > (this.stores?.length || 0);
-	}
-
-	getStoreAtIndex(idx: number): Store | null {
-		if (idx < 0 || idx > (this.stores?.length || 0)) {
-			return null;
+	get stores(): Store[] {
+		const arr = [...this.storesInternal];
+		if (this.searchTerm === "") {
+			return arr;
 		}
-		return this.stores[idx];
+		return arr.filter(s => this.matchesSearch(s.storeName));
 	}
 }
 </script>

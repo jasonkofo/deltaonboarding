@@ -82,6 +82,10 @@ export class Deal {
 		return this._title || "";
 	}
 
+	get ID(): string {
+		return this._dealID || "";
+	}
+
 	get trimmedTitle(): string {
 		const len = 25;
 		if (this.title.length > len) {
@@ -112,6 +116,10 @@ export class Deal {
 
 	get salePrice(): string {
 		return this.toCurrency(this._salePrice || 0);
+	}
+
+	get totalSavings(): string {
+		return this.toCurrency((parseFloat(this.normalPrice) || 0) - (parseFloat(this.salePrice) || 0));
 	}
 
 	get storeID(): string {

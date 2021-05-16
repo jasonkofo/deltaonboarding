@@ -7,15 +7,17 @@
         id="search-text-input"
       />
       <label for="search-text-input">Search</label>
-      <button
-        type="button"
-        class="btn btn-primary"
-      >
-        <i class="fas fa-search"></i>
-      </button>
+      <i class="bi bi-search"></i>
+      <i class="fas fa-search search-icon"></i>
     </div>
   </div>
 </template>
+
+<style lang="scss">
+.search-icon {
+	width: 100px;
+}
+</style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -28,7 +30,11 @@ export default class Search extends Vue {
 
 	@Watch("searchText")
 	onSearchText() {
-		clearTimeout(this.searchBroadcastTimeout);
+		if (!this.searchBroadcastTimeout) {
+			this.$emit("startTyping");
+		} else {
+			clearTimeout(this.searchBroadcastTimeout);
+		}
 		this.searchBroadcastTimeout = setTimeout(() => {
 			this.$emit("searchText", this.searchText);
 		}, 250);

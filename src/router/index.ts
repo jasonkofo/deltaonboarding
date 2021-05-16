@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Deals from "../views/Deals.vue";
 import Games from "../views/Games.vue";
 import Stores from "../views/Stores.vue";
+import DealView from "../views/DealView.vue";
 
 Vue.use(VueRouter);
 
@@ -11,6 +12,12 @@ const routes: Array<RouteConfig> = [
 		path: "/deals",
 		name: "Deals",
 		component: Deals
+	},
+	{
+		path: "/dealview/:dealID",
+		name: "DealView",
+		component: DealView,
+		props: route => ({ dealID: route.params.dealID })
 	},
 	{
 		path: "/games",

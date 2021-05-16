@@ -19,7 +19,7 @@
       <button
         type="button"
         class="btn btn-outline-info view-more-button"
-        @click="navigateToDeal()"
+        @click="navigateToDealView(deal)"
       >View More</button>
     </div>
   </div>
@@ -41,7 +41,9 @@ export default class DealItem extends Vue {
 		return "";
 	}
 
-	navigateToDeal() {}
+	navigateToDealView(deal: Deal) {
+		this.$router.push({ name: "DealView", params: { dealID: deal.ID } });
+	}
 }
 </script>
 
