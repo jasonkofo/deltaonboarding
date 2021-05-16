@@ -48,6 +48,8 @@ export default class DealItem extends Vue {
 </script>
 
 <style lang="scss">
+@import "../assets/common.scss";
+
 @mixin rounded-edges() {
 	border-radius: 15px;
 }
@@ -56,8 +58,9 @@ export default class DealItem extends Vue {
 }
 
 .deal-item-container {
+	@include information-tab();
 	text-align: left;
-	background-color: rgba(251, 251, 251, 255);
+
 	padding: 25px;
 	margin: 5px;
 	height: auto;
@@ -76,8 +79,7 @@ export default class DealItem extends Vue {
 			margin-right: 10px;
 		}
 		.sale-price {
-			color: rgba(0, 174, 141, 255);
-			font-weight: 400;
+			@include sale-price();
 		}
 	}
 }

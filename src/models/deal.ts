@@ -126,6 +126,10 @@ export class Deal {
 		return this._storeID || "";
 	}
 
+	get internalName(): string {
+		return this._internalName || "";
+	}
+
 	private toCurrency(val: number) {
 		return val.toLocaleString("en-US", {
 			currency: "usd",
